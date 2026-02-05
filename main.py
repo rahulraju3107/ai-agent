@@ -14,9 +14,14 @@ response = client.models.generate_content(
         model="gemini-2.5-flash", 
         contents="Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum.",
         )
+if not response.usage_metadata:
+    raise RuntimeError("Gemini API response appears to be malformed")
+
 
 def main():
-    print("Hello from ai-agent!")
+    print("Prompt tokens:", response.usage_metadata.prompt_token_count)
+    print("Response tokens:", response.usage_metadata.candidates_token_count)
+    print("Response:")
     print(response.text)
 
 
