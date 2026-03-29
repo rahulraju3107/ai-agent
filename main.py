@@ -10,6 +10,7 @@ def main():
     # Parser object
     parser = argparse.ArgumentParser(description="ai-agent")
     parser.add_argument("user_prompt", type=str, help="User prompt")
+    parser.add_argument("--verbose", action="store_true", help="Print prompt and token counts")
     args = parser.parse_args()
 
     load_dotenv()
@@ -26,9 +27,10 @@ def main():
     if not response.usage_metadata:
         raise RuntimeError("Gemini API response appears to be malformed")
 
-    print("Prompt tokens:", response.usage_metadata.prompt_token_count)
-    print("Response tokens:", response.usage_metadata.candidates_token_count)
-    print("Response:")
+    if args.verbose:
+        print("User prompt:", args.user_prompt)
+        print("Prompt tokens:", response.usage_metadata.prompt_token_count)
+        print("Response tokens:", response.usage_metadata.candidates_token_count)
     print(response.text)
 
 
